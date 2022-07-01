@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cozserver-deployment
+  labels:
+    app: cozserver
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: cozserver
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    # 여기서부터 파드 템플릿이다
+    metadata:
+      labels:
+        app: cozserver
+    spec:
+      containers:
+      - name: coz-container
+        image: sebcontents/cozserver:2.0
+        ports:
+        - containerPort: 80
